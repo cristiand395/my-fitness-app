@@ -60,8 +60,8 @@ El objetivo es ofrecer una experiencia completa, moderna y personalizable que pu
 - [✅] Crear proyecto Next.js 16 con pnpm  
 - [✅] Configurar TypeScript  
 - [✅] Instalar y configurar Tailwind v4  
-- [ ] Integrar shadcn/ui  
-- [ ] Configurar Drizzle ORM con PostgreSQL  
+- [✅] Integrar shadcn/ui
+- [ ] Configurar Drizzle ORM con PostgreSQ
 - [ ] Dockerizar entorno de desarrollo  
 - [ ] Crear `.env.dev` con variables base  
 
