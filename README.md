@@ -57,13 +57,13 @@ El objetivo es ofrecer una experiencia completa, moderna y personalizable que pu
 ## 🛠️ Roadmap General
 
 ### 🏁 Etapa 1 — Configuración base
-- [✅] Crear proyecto Next.js 16 con pnpm  
-- [✅] Configurar TypeScript  
-- [✅] Instalar y configurar Tailwind v4  
+- [✅] Crear proyecto Next.js 16 con pnpm
+- [✅] Configurar TypeScript
+- [✅] Instalar y configurar Tailwind v4
 - [✅] Integrar shadcn/ui
-- [ ] Configurar Drizzle ORM con PostgreSQ
-- [ ] Dockerizar entorno de desarrollo  
-- [ ] Crear `.env.dev` con variables base  
+- [✅] Dockerizar entorno de desarrollo
+- [✅] Crear `.env.dev` con variables base
+- [✅] Configurar Drizzle ORM con PostgreSQL
 
 ---
 
@@ -164,6 +164,89 @@ Creado con fines de aprendizaje, contribución y autouso.
 - [ ] Etapa 6: UI / UX  
 - [ ] Etapa 7: Testing / CI  
 - [ ] Etapa 8: IA y módulos futuros  
+
+---
+
+## 🐳 Docker — comandos de desarrollo
+
+A continuación tienes comandos prácticos para trabajar con `compose.dev.yaml` (desarrollo). Ejecuta los comandos desde la raíz del proyecto.
+
+- Levantar servicios en primer plano (ver logs en la misma terminal):
+
+```zsh
+docker compose -f compose.dev.yaml up
+```
+
+- Levantar servicios en segundo plano (detached) y luego entrar al shell del contenedor `web`:
+
+```zsh
+docker compose -f compose.dev.yaml up -d
+docker compose -f compose.dev.yaml exec -it web sh
+```
+
+- Levantar en background y abrir shell en una sola línea (útil para scripts):
+
+```zsh
+docker compose -f compose.dev.yaml up -d && docker compose -f compose.dev.yaml exec -it web sh
+```
+
+- Ejecutar el contenedor `web` de manera efímera y obtener un shell (no reutiliza el contenedor gestionado por `up`):
+
+```zsh
+docker compose -f compose.dev.yaml run --service-ports --rm web sh
+```
+
+- Dentro del contenedor `web`: iniciar la app de desarrollo (pnpm):
+
+```zsh
+# dentro del shell del contenedor
+pnpm dev
+```
+
+- Ver logs en tiempo real (web o db):
+
+```zsh
+docker compose -f compose.dev.yaml logs -f web
+docker compose -f compose.dev.yaml logs -f db
+```
+
+- Parar y eliminar contenedores (mantiene volúmenes):
+
+```zsh
+docker compose -f compose.dev.yaml down
+```
+
+- Parar, eliminar contenedores y volúmenes asociados (útil para re-inicializar Postgres):
+
+```zsh
+docker compose -f compose.dev.yaml down -v
+```
+
+- Forzar recreación (útil al cambiar `entrypoint.sh` o montar archivos):
+
+```zsh
+docker compose -f compose.dev.yaml up -d --build --force-recreate
+```
+
+- Conectar a Postgres desde el host (si expones 5432):
+
+```zsh
+# usando psql (instálalo en tu host si hace falta)
+psql postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost:5432/${POSTGRES_DB}
+```
+
+- Ejecutar un comando psql dentro del contenedor `db` (útil para crear DB/usuarios o correr SQL):
+
+```zsh
+docker compose -f compose.dev.yaml exec db psql -U $POSTGRES_USER -d $POSTGRES_DB -c "SELECT 1;"
+# o abrir consola interactiva
+docker compose -f compose.dev.yaml exec -it db psql -U $POSTGRES_USER -d $POSTGRES_DB
+```
+
+Notas rápidas:
+- Usa `docker compose -p <project>` para cambiar el prefijo del proyecto y evitar conflictos de nombres de contenedor si levantas varias instancias en la misma máquina.
+- Si tu `entrypoint.sh` no tiene el bit ejecutable en el host, el `command` del compose usa `sh /app/entrypoint.sh` para ejecutarlo sin `chmod` previo.
+- Para re-ejecutar scripts de inicialización de Postgres (`/docker-entrypoint-initdb.d`) borra el volumen `pgdata` con `docker compose down -v` y vuelve a levantar.
 
 ---
 

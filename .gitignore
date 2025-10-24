@@ -17,6 +17,11 @@
 /.next/
 /out/
 
+# Pnpm
+.pnpm/
+.pnpm-lock.yaml
+.pnpm-store/
+
 # production
 /build
 
@@ -39,3 +44,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# IDEs / editors
+.vscode/
+.idea/
