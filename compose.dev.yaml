@@ -10,8 +10,7 @@ services:
     tty: true
     volumes:
       - .:/app:cached
-      - node_modules:/app/node_modules
-      - ${HOME}/.pnpm-store:/home/node/.pnpm-store  # opcional, acelera pnpm
+      - ${HOME}/.pnpm-store:/home/node/.pnpm-store  # cache local de pnpm
     environment:
       - WATCHPACK_POLLING=true
     working_dir: /app
@@ -29,7 +28,6 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
-    # Healthcheck usa pg_isready (incluido en la imagen oficial de Postgres)
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
       interval: 5s
@@ -38,4 +36,3 @@ services:
 
 volumes:
   pgdata:
-  node_modules:

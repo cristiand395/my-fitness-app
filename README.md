@@ -55,7 +55,6 @@ El objetivo es ofrecer una experiencia completa, moderna y personalizable que pu
 ---
 ˛
 ## 🛠️ Roadmap General
-
 ### 🏁 Etapa 1 — Configuración base
 - [✅] Crear proyecto Next.js 16 con pnpm
 - [✅] Configurar TypeScript
