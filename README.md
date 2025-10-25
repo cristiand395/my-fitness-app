@@ -67,12 +67,12 @@ El objetivo es ofrecer una experiencia completa, moderna y personalizable que pu
 ---
 
 ### 🧱 Etapa 2 — Estructura y Base de Datos
-- [ ] Modelar base de datos inicial con Drizzle
-  - [ ] Users
-  - [ ] Workouts
-  - [ ] Exercises
-  - [ ] Sets
-  - [ ] Calories
+- [⏳] Modelar base de datos inicial con Drizzle
+  - [⏳] Users
+  - [⏳] Workouts
+  - [⏳] Exercises
+  - [⏳] Sets
+  - [⏳] Calories
   - [ ] WeightLogs
 - [ ] Crear migraciones iniciales  
 - [ ] Semillas de ejemplo (fixtures)  
