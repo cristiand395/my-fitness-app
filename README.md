@@ -73,7 +73,7 @@ El objetivo es ofrecer una experiencia completa, moderna y personalizable que pu
   - [⏳] Exercises
   - [⏳] Sets
   - [⏳] Calories
-  - [ ] WeightLogs
+  - [⏳] WeightLogs
 - [ ] Crear migraciones iniciales  
 - [ ] Semillas de ejemplo (fixtures)  
 
