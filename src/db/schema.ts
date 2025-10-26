@@ -9,27 +9,14 @@ import {
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
-
-//🧍Usuarios
-export const users = pgTable("users", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  name: varchar("name", { length: 255 }).notNull(),
-  email: varchar("email", { length: 255 }).notNull().unique(),
-  gender: varchar("gender", { length: 50 }),
-  passwordHash: varchar("password_hash", { length: 255 }).notNull(),
-  birthdate: date("birthdate").notNull(),
-  weightUnit: varchar("weight_unit", { length: 2 }).notNull().default("kg"), // 'kg' o 'lbs'
-  lang: varchar("lang", { length: 5 }).notNull().default("es"), // 'en', 'es', etc.
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().notNull(),
-});
+import { user } from "@/db/auth-schema";
 
 // ⚖️ Registro de peso corporal
-export const bodyWeights = pgTable("body_weights", {
+export const bodyWeight = pgTable("body_weight", {
   id: uuid("id").primaryKey().defaultRandom(),
-  userId: uuid("user_id")
+  userId: text("user_id")
     .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
+    .references(() => user.id, { onDelete: "cascade" }),
   weightKg: numeric("weight_kg", { precision: 6, scale: 2 }).notNull(),
   note: text(),
   date: date().notNull().defaultNow(),
@@ -38,11 +25,11 @@ export const bodyWeights = pgTable("body_weights", {
 });
 
 // 🔥 Registro de calorías
-export const calories = pgTable("calories", {
+export const calorie = pgTable("calorie", {
   id: uuid("id").primaryKey().defaultRandom(),
-  userId: uuid("user_id")
+  userId: text("user_id")
     .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
+    .references(() => user.id, { onDelete: "cascade" }),
   calories: integer("calories").notNull(),
   note: text(),
   date: date().notNull().defaultNow(),
@@ -51,16 +38,16 @@ export const calories = pgTable("calories", {
 });
 
 // 💪 🦵 Grupo de músculos
-export const muscleGroups = pgTable("muscle_groups", {
+export const muscleGroup = pgTable("muscle_group", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: varchar("name", { length: 255 }).notNull(),
 });
 
 // 💪 Músculos
-export const muscles = pgTable("muscles", {
+export const muscle = pgTable("muscle", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: varchar("name", { length: 255 }).notNull(),
-  groupId: uuid("group_id").notNull().references(() => muscleGroups.id),
+  groupId: uuid("group_id").notNull().references(() => muscleGroup.id),
 });
 
 // Equipamiento de ejercicio
@@ -71,7 +58,7 @@ export const equipment = pgTable("equipment", {
 });
 
 // 🏋️‍♂️ Tipos de ejercicio
-export const exerciseTypes = pgTable("exercise_types", {
+export const exerciseType = pgTable("exercise_type", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: varchar("name", { length: 255 }).notNull(),
   includeReps: boolean("include_reps").notNull().default(true),
@@ -83,33 +70,33 @@ export const exerciseTypes = pgTable("exercise_types", {
 });
 
 // 🏃‍♂️ Ejercicios
-export const exercises = pgTable("exercises", {
+export const exercise = pgTable("exercise", {
   id: uuid("id").primaryKey().defaultRandom(),
-  userId: uuid("user_id").references(() => users.id), // Ejercicios globales o por usuario
+  userId: text("user_id").references(() => user.id), // Ejercicios globales o por usuario
   name: varchar("name", { length: 255 }).notNull(),
-  typeID: uuid("type_id").notNull().references(() => exerciseTypes.id),
+  typeID: uuid("type_id").notNull().references(() => exerciseType.id),
   equipmentID: uuid("equipment_id").notNull().references(() => equipment.id),
-  primaryMuscleId: uuid("primary_muscle_id").notNull().references(() => muscles.id),
-  secondaryMuscleId: uuid("secondary_muscle_id").references(() => muscles.id),
+  primaryMuscleId: uuid("primary_muscle_id").notNull().references(() => muscle.id),
+  secondaryMuscleId: uuid("secondary_muscle_id").references(() => muscle.id),
   movementType: varchar("movement_type", { length: 255 }).notNull().default("compound"), // Compuesto, aislado, etc.
   isFavorite: boolean("is_favorite").notNull().default(false),
   notes: text(),
 });
 
 // Entrenamientos (pertenecen a un usuario)
-export const workouts = pgTable("workouts", {
+export const workout = pgTable("workout", {
   id: uuid("id").primaryKey().defaultRandom(),
-  userId: uuid("user_id").notNull().references(() => users.id),
+  userId: text("user_id").notNull().references(() => user.id),
   startAt: timestamp("start_at").notNull().defaultNow(),
   endAt: timestamp("end_at"),
   notes: text(),
 });
 
 // Sets / series de un ejercicio
-export const sets = pgTable("sets", {
+export const set = pgTable("set", {
   id: uuid("id").primaryKey().defaultRandom(),
-  exerciseId: uuid("exercise_id").notNull().references(() => exercises.id),
-  workoutId: uuid("workout_id").notNull().references(() => workouts.id),
+  exerciseId: uuid("exercise_id").notNull().references(() => exercise.id),
+  workoutId: uuid("workout_id").notNull().references(() => workout.id),
   reps: integer("reps").notNull(),
   weight: numeric("weight", { precision: 6, scale: 2 }),
   duration: integer("duration"),
@@ -117,9 +104,9 @@ export const sets = pgTable("sets", {
 });
 
 // Periodos de descarga
-export const deloadPeriods = pgTable("deload_periods", {
+export const deloadPeriod = pgTable("deload_period", {
   id: uuid("id").primaryKey().defaultRandom(),
-  userId: uuid("user_id").notNull().references(() => users.id),
+  userId: text("user_id").notNull().references(() => user.id),
   startAt: timestamp("start_at").notNull().defaultNow(),
   endAt: timestamp("end_at"),
   intensityPercent: integer("intensity_percent").notNull().default(80),
@@ -127,9 +114,9 @@ export const deloadPeriods = pgTable("deload_periods", {
 });
 
 // Registro de peso corporal por usuario
-export const weightLogs = pgTable("weight_logs", {
+export const weightLog = pgTable("weight_log", {
   id: uuid("id").primaryKey().defaultRandom(),
-  userId: uuid("user_id").notNull().references(() => users.id),
+  userId: text("user_id").notNull().references(() => user.id),
   weight: numeric("weight", { precision: 6, scale: 2 }).notNull(),
   loggedAt: timestamp("logged_at").notNull().defaultNow(),
 });
