@@ -3,7 +3,11 @@ import { useActionState } from "react";
 import { SignUp } from "@/lib/auth/sigh-up";
 
 export default function Page() {
-  const [state, formAction, isPending] = useActionState<{ success: boolean; message: string }>(SignUp, null);
+  const [state, formAction, isPending] = useActionState<any>(SignUp, {
+    name: "",
+    email: "",
+    password: "",
+  });
   return (
     <div>
       <h1>Sign Up Page</h1>
