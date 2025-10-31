@@ -48,3 +48,6 @@ next-env.d.ts
 # IDEs / editors
 .vscode/
 .idea/
+
+# Drizzle ORM
+drizzle/
