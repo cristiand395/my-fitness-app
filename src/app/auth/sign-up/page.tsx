@@ -1,27 +1,28 @@
 "use client"
 import { useActionState } from "react";
-import { SignUp } from "@/lib/auth/sigh-up";
-
+import { SignUp, SignUpResponse } from "@/lib/auth/sigh-up";
+import { redirect } from "next/navigation";
 export default function Page() {
-  const [state, formAction, isPending] = useActionState<any>(SignUp, {
-    name: "",
-    email: "",
-    password: "",
-  });
+  const [state, formAction, isPending] = useActionState(
+    SignUp as (prevState: SignUpResponse | null, formData: FormData) => Promise<SignUpResponse>,
+    null
+  );
+  if (state?.success) {
+    redirect("/dashboard");
+  }
   return (
     <div>
       <h1>Sign Up Page</h1>
       <form action={formAction}>
-        <input type="text" name="name"/>
-        <input type="email" name="email"/>
-        <input type="password" name="password"/>
+        <input type="text" name="name" defaultValue={state?.rawData?.name}/>
+        <input type="email" name="email" defaultValue={state?.rawData?.email}/>
+        <input type="password" name="password" defaultValue={state?.rawData?.password}/>
         <button type="submit">
-          Enviar
+          Submit
         </button>
-        {isPending && <p>Enviando...</p>}
-        {state && state.success && <p>{state.message}</p>}
-        {state && !state.success && <p>Error: {state.message}</p>}
-      </form>
+        {isPending && <p>Sending...</p>}
+      {state && !state.success && <p>Error: {state.message}</p>}
+      </form> 
     </div>
   )
 }

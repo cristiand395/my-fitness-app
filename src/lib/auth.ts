@@ -4,6 +4,8 @@ import { db } from "@/index"; // your drizzle instance
 import { user, session, account, verification } from "@/db/schema";
 
 export const auth = betterAuth({
+    baseURL: process.env.NEXT_PUBLIC_BASE_URL || process.env.BETTER_AUTH_URL || "http://localhost:3000",
+    basePath: "/api/auth",
     database: drizzleAdapter(db, {
         provider: "pg",
         // Pass the DB schema so the adapter can find the tables/models
