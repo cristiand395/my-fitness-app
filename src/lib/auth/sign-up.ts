@@ -21,7 +21,6 @@ export async function SignUp(
   prevState: SignUpResponse | null,
   formData: FormData
 ): Promise<SignUpResponse> {
-  console.log("form submitted")
   
   // Extraer los valores del FormData
   const rawFormData = {
