@@ -80,9 +80,9 @@ El objetivo es ofrecer una experiencia completa, moderna y personalizable que pu
 ---
 
 ### 🔐 Etapa 3 — Autenticación
-- [ ] Implementar Better Auth (email + password)
-- [ ] Rutas protegidas en Next.js
-- [ ] Persistencia de sesión  
+- [✅] Implementar Better Auth (email + password)
+- [✅] Rutas protegidas en Next.js
+- [✅] Persistencia de sesión  
 - [ ] Proxy de protección  
 
 ---
