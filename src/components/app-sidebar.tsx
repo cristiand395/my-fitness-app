@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { ChevronDown, ChevronUp, User2 } from "lucide-react"
+import { SignOutButton } from "@/app/(internal)/dashboard/sign-out-button";
 
 export async function AppSidebar() {
   const session = await auth.api.getSession({
@@ -51,7 +52,7 @@ export async function AppSidebar() {
                   <span>Account</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <span>Sign out</span>
+                  <SignOutButton />
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
