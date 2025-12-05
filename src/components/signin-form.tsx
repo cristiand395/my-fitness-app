@@ -66,9 +66,14 @@ export function SigninForm() {
               </Button>
             </div>
           </div>
-          <Button type="submit" className="w-full">
-            Sign in
+          <Button type="submit" className="w-full" disabled={isPending}>
+            {isPending ? "Signing in..." : "Sign in"}
           </Button>
+          {state && !state.success && (
+            <p className="text-sm text-red-600">
+              {state.message}
+            </p>
+          )}
         </form>
       </CardContent>
       <CardFooter className="flex flex-col gap-4 mt-4">
