@@ -8,6 +8,19 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+  FieldLegend,
+  FieldSeparator,
+  FieldSet,
+  FieldTitle,
+} from "@/components/ui/field"
+import { Checkbox } from "@/components/ui/checkbox"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Eye, EyeOff } from "lucide-react"
 
@@ -29,51 +42,58 @@ export function SigninForm() {
       </CardHeader>
       <CardContent className="space-y-4">
         <form action={formAction} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              type="email"
-              placeholder="name@example.com"
-              name="email"
-              defaultValue={state?.rawData?.email}
-              required
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <div className="relative">
-              <Input
-                type={showPassword ? "text" : "password"}
-                placeholder="Enter your password"
-                name="password"
-                defaultValue={state?.rawData?.password}
-                required
-                className="pr-10"
-              />
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
-                onClick={() => setShowPassword(!showPassword)}
-                aria-label={showPassword ? "Hide password" : "Show password"}
-              >
-                {showPassword ? (
-                  <EyeOff className="h-4 w-4 text-muted-foreground" />
-                ) : (
-                  <Eye className="h-4 w-4 text-muted-foreground" />
-                )}
+          <FieldGroup>
+            <FieldSet>
+              <FieldGroup>
+                <Field>
+                  <FieldLabel htmlFor="email">
+                    Email
+                  </FieldLabel>
+                  <Input
+                    type="email"
+                    placeholder="name@example.com"
+                    name="email"
+                    defaultValue={state?.rawData?.email}
+                    required
+                  />
+                </Field>
+                <Field>
+                  <FieldLabel htmlFor="password">
+                    Password
+                  </FieldLabel>
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter your password"
+                    name="password"
+                    defaultValue={state?.rawData?.password}
+                    required
+                  />
+                </Field>
+                <Field orientation="horizontal">
+                  <Checkbox
+                    onClick={() => setShowPassword(!showPassword)}
+                    checked={showPassword}
+                  />
+                  <FieldLabel
+                    className="font-normal"
+                  >
+                    Show password
+                  </FieldLabel>
+                </Field>
+              </FieldGroup>
+            </FieldSet>
+            <Field>
+              <Button type="submit" className="w-full" disabled={isPending}>
+                {isPending ? "Signing in..." : "Sign in"}
               </Button>
-            </div>
-          </div>
-          <Button type="submit" className="w-full" disabled={isPending}>
-            {isPending ? "Signing in..." : "Sign in"}
-          </Button>
-          {state && !state.success && (
-            <p className="text-sm text-red-600">
-              {state.message}
-            </p>
-          )}
+              {state && !state.success && (
+                <p className="text-sm text-red-600">
+                  {state.message}
+                </p>
+              )}
+            </Field>
+          </FieldGroup>
         </form>
       </CardContent>
       <CardFooter className="flex flex-col gap-4 mt-4">
